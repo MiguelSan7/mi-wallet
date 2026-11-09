@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F4F0" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0C0E" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Mi Billetera Lite: aplicación web progresiva ultraligera para registrar gastos diarios con funcionamiento 100% sin conexión."
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Billetera" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>Mi Billetera Lite</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" role="banner">
+        <div class="brand">
+          <div class="brand-mark" id="brand-icon" aria-hidden="true"></div>
+          <div class="brand-text">
+            <h1 class="brand-title">Mi Billetera Lite</h1>
+            <p class="brand-subtitle">Registro local sin conexión</p>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="network-pill" id="network-status" role="status" aria-live="polite">
+            <span class="network-icon" id="network-icon" aria-hidden="true"></span>
+            <span class="network-label" id="network-label">Online</span>
+          </div>
+
+          <button
+            type="button"
+            class="icon-btn install-btn"
+            id="install-btn"
+            hidden
+            aria-label="Instalar aplicación"
+            title="Instalar aplicación"
+          >
+            <span id="install-icon" aria-hidden="true"></span>
+            <span class="install-text">Instalar</span>
+          </button>
+
+          <button
+            type="button"
+            class="icon-btn"
+            id="theme-toggle"
+            aria-label="Cambiar tema de color"
+            title="Cambiar tema"
+          >
+            <span id="theme-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="ledger-card" aria-labelledby="total-heading">
+          <div class="ledger-header">
+            <span class="ledger-eyebrow" id="total-heading">Total registrado</span>
+            <span class="ledger-count-badge" id="expense-count">0 movimientos</span>
+          </div>
+
+          <div class="ledger-amount-row">
+            <span class="currency-symbol" aria-hidden="true">$</span>
+            <output class="ledger-total" id="total-amount" for="expense-form">0.00</output>
+            <span class="currency-code">MXN</span>
+          </div>
+
+          <div class="distribution-bar" id="distribution-bar" aria-hidden="true"></div>
+          <div class="distribution-legend" id="distribution-legend"></div>
+        </section>
+
+        <section class="panel form-panel" aria-labelledby="form-heading">
+          <div class="panel-header">
+            <h2 class="panel-title" id="form-heading">Nuevo gasto</h2>
+            <span class="panel-hint">Guardado instantáneo en dispositivo</span>
+          </div>
+
+          <form id="expense-form" class="expense-form" novalidate>
+            <div class="field-grid">
+              <div class="field-group field-concept">
+                <label class="field-label" for="concept">Concepto</label>
+                <input
+                  type="text"
+                  id="concept"
+                  name="concept"
+                  class="field-input"
+                  placeholder="Ej. Café, Taxis, Mercado..."
+                  maxlength="120"
+                  autocomplete="off"
+                  enterkeyhint="next"
+                  required
+                />
+              </div>
+
+              <div class="field-group field-amount">
+                <label class="field-label" for="amount">Monto</label>
+                <div class="amount-input-wrap">
+                  <span class="amount-prefix" aria-hidden="true">$</span>
+                  <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    class="field-input field-input-amount"
+                    placeholder="45.50"
+                    inputmode="decimal"
+                    step="0.01"
+                    min="0.01"
+                    enterkeyhint="done"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="category-label-row">
+                <label class="field-label" for="category">Categoría</label>
+                <select id="category" name="category" class="native-category-select" aria-label="Categoría del gasto">
+                  <option value="Comida">Comida</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Servicios">Servicios</option>
+                  <option value="Ocio">Ocio</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+
+              <div
+                class="category-pills"
+                id="category-pills"
+                role="radiogroup"
+                aria-label="Selector rápido de categoría"
+              ></div>
+            </div>
+
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+
+            <button type="submit" class="submit-btn" id="submit-btn">
+              <span class="submit-icon" id="submit-icon" aria-hidden="true"></span>
+              <span>Guardar gasto</span>
+            </button>
+          </form>
+        </section>
+
+        <section class="panel history-panel" aria-labelledby="history-heading">
+          <div class="history-header">
+            <div class="history-title-group">
+              <h2 class="panel-title" id="history-heading">Historial de gastos</h2>
+              <span class="history-order-hint">Más reciente al más antiguo</span>
+            </div>
+
+            <div class="filter-bar" id="filter-bar" role="tablist" aria-label="Filtrar por categoría"></div>
+          </div>
+
+          <div class="empty-state" id="empty-state" hidden>
+            <div class="empty-icon" id="empty-icon" aria-hidden="true"></div>
+            <p class="empty-title">Sin gastos registrados</p>
+            <p class="empty-copy">
+              Agrega tu primer movimiento arriba. Tus datos quedan guardados en este dispositivo aunque estés en modo avión.
+            </p>
+          </div>
+
+          <ul class="expense-list" id="expense-list" aria-live="polite"></ul>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span class="footer-meta">Almacenamiento local IndexedDB + Service Worker Cache First</span>
+        <div class="dataset-switcher" role="group" aria-label="Modo de verificación de interfaz">
+          <button type="button" class="dataset-btn is-active" id="mode-live-btn" data-mode="live">
+            Datos reales
+          </button>
+          <button type="button" class="dataset-btn" id="mode-worst-btn" data-mode="worst">
+            Caso extremo UI
+          </button>
+        </div>
+      </footer>
+    </div>
+
+    <div class="toast-viewport" aria-live="polite" aria-atomic="true">
+      <div class="toast" id="undo-toast" data-visible="false" role="status">
+        <span class="toast-message" id="toast-message">Gasto eliminado</span>
+        <button type="button" class="toast-action" id="toast-undo-btn">
+          <span id="undo-icon" aria-hidden="true"></span>
+          <span>Deshacer</span>
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
