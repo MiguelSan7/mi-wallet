@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mi-billetera-lite-v1';
+const CACHE_NAME = 'mi-billetera-lite-v3';
 
 const APP_SHELL = [
   './',

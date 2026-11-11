@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="es-MX">
+<html lang="es-MX" data-variant="tactile">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
     />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F4F0" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0C0E" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#08090C" />
     <meta name="color-scheme" content="light dark" />
     <meta
       name="description"
@@ -23,18 +23,24 @@
     <title>Mi Billetera Lite</title>
   </head>
   <body>
+    <div class="ambient-aura" id="ambient-aura" aria-hidden="true"></div>
+
     <div class="app-shell">
       <header class="topbar" role="banner">
         <div class="brand">
           <div class="brand-mark" id="brand-icon" aria-hidden="true"></div>
           <div class="brand-text">
-            <h1 class="brand-title">Mi Billetera Lite</h1>
-            <p class="brand-subtitle">Registro local sin conexión</p>
+            <div class="brand-title-row">
+              <h1 class="brand-title">Mi Billetera</h1>
+              <span class="brand-edition">LITE</span>
+            </div>
+            <p class="brand-subtitle" id="current-date-label">REGISTRO LOCAL</p>
           </div>
         </div>
 
         <div class="topbar-actions">
           <div class="network-pill" id="network-status" role="status" aria-live="polite">
+            <span class="status-led" aria-hidden="true"></span>
             <span class="network-icon" id="network-icon" aria-hidden="true"></span>
             <span class="network-label" id="network-label">Online</span>
           </div>
@@ -64,47 +70,45 @@
       </header>
 
       <main class="main-content">
-        <section class="ledger-card" aria-labelledby="total-heading">
-          <div class="ledger-header">
-            <span class="ledger-eyebrow" id="total-heading">Total registrado</span>
-            <span class="ledger-count-badge" id="expense-count">0 movimientos</span>
+        <section class="ledger-instrument" aria-labelledby="total-heading">
+          <div class="instrument-screws" aria-hidden="true">
+            <span class="screw-dot"></span>
+            <span class="instrument-code">SYS // OFFLINE-FIRST IDB</span>
+            <span class="screw-dot"></span>
           </div>
 
-          <div class="ledger-amount-row">
-            <span class="currency-symbol" aria-hidden="true">$</span>
-            <output class="ledger-total" id="total-amount" for="expense-form">0.00</output>
-            <span class="currency-code">MXN</span>
-          </div>
+          <div class="ledger-display-well">
+            <div class="ledger-header">
+              <span class="ledger-eyebrow" id="total-heading">Balance de gastos</span>
+              <span class="ledger-count-badge" id="expense-count">0 movimientos</span>
+            </div>
 
-          <div class="distribution-bar" id="distribution-bar" aria-hidden="true"></div>
-          <div class="distribution-legend" id="distribution-legend"></div>
+            <div class="ledger-amount-row">
+              <span class="currency-symbol" aria-hidden="true">$</span>
+              <output class="ledger-total" id="total-amount" for="expense-form">0.00</output>
+              <span class="currency-code">MXN</span>
+            </div>
+
+            <div class="meter-section">
+              <div class="distribution-bar" id="distribution-bar" aria-hidden="true"></div>
+              <div class="distribution-legend" id="distribution-legend"></div>
+            </div>
+          </div>
         </section>
 
-        <section class="panel form-panel" aria-labelledby="form-heading">
-          <div class="panel-header">
-            <h2 class="panel-title" id="form-heading">Nuevo gasto</h2>
-            <span class="panel-hint">Guardado instantáneo en dispositivo</span>
+        <section class="composer-ticket" aria-labelledby="form-heading">
+          <div class="ticket-header">
+            <div class="ticket-title-wrap">
+              <span class="ticket-index">01</span>
+              <h2 class="panel-title" id="form-heading">Registrar movimiento</h2>
+            </div>
+            <span class="panel-hint">Persistencia inmediata</span>
           </div>
 
           <form id="expense-form" class="expense-form" novalidate>
-            <div class="field-grid">
-              <div class="field-group field-concept">
-                <label class="field-label" for="concept">Concepto</label>
-                <input
-                  type="text"
-                  id="concept"
-                  name="concept"
-                  class="field-input"
-                  placeholder="Ej. Café, Taxis, Mercado..."
-                  maxlength="120"
-                  autocomplete="off"
-                  enterkeyhint="next"
-                  required
-                />
-              </div>
-
-              <div class="field-group field-amount">
-                <label class="field-label" for="amount">Monto</label>
+            <div class="amount-deck">
+              <div class="amount-well">
+                <label class="field-micro-label" for="amount">MONTO DEL GASTO</label>
                 <div class="amount-input-wrap">
                   <span class="amount-prefix" aria-hidden="true">$</span>
                   <input
@@ -112,7 +116,7 @@
                     id="amount"
                     name="amount"
                     class="field-input field-input-amount"
-                    placeholder="45.50"
+                    placeholder="0.00"
                     inputmode="decimal"
                     step="0.01"
                     min="0.01"
@@ -121,11 +125,37 @@
                   />
                 </div>
               </div>
+
+              <div class="quick-denom-row" role="group" aria-label="Sumar monto rápido">
+                <button type="button" class="denom-key" data-add-amount="20">+$20</button>
+                <button type="button" class="denom-key" data-add-amount="50">+$50</button>
+                <button type="button" class="denom-key" data-add-amount="100">+$100</button>
+                <button type="button" class="denom-key" data-add-amount="200">+$200</button>
+                <button type="button" class="denom-key denom-clear" data-clear-amount="true">C</button>
+              </div>
+            </div>
+
+            <div class="field-group field-concept">
+              <div class="concept-header-row">
+                <label class="field-micro-label" for="concept">CONCEPTO O REFERENCIA</label>
+                <div class="preset-chips" id="preset-chips" aria-label="Sugerencias rápidas"></div>
+              </div>
+              <input
+                type="text"
+                id="concept"
+                name="concept"
+                class="field-input field-input-concept"
+                placeholder="Ej. Café, Taxis, Mercado..."
+                maxlength="120"
+                autocomplete="off"
+                enterkeyhint="next"
+                required
+              />
             </div>
 
             <div class="field-group">
               <div class="category-label-row">
-                <label class="field-label" for="category">Categoría</label>
+                <label class="field-micro-label" for="category">CATEGORÍA</label>
                 <select id="category" name="category" class="native-category-select" aria-label="Categoría del gasto">
                   <option value="Comida">Comida</option>
                   <option value="Transporte">Transporte</option>
@@ -139,63 +169,91 @@
                 class="category-pills"
                 id="category-pills"
                 role="radiogroup"
-                aria-label="Selector rápido de categoría"
+                aria-label="Selector táctil de categoría"
               ></div>
             </div>
 
             <p class="form-error" id="form-error" role="alert" hidden></p>
 
             <button type="submit" class="submit-btn" id="submit-btn">
-              <span class="submit-icon" id="submit-icon" aria-hidden="true"></span>
-              <span>Guardar gasto</span>
+              <span class="submit-content" id="submit-content">
+                <span class="submit-icon" id="submit-icon" aria-hidden="true"></span>
+                <span id="submit-label">Guardar gasto</span>
+              </span>
+              <kbd class="submit-kbd" aria-hidden="true">↵</kbd>
             </button>
           </form>
         </section>
 
-        <section class="panel history-panel" aria-labelledby="history-heading">
+        <section class="history-ledger" aria-labelledby="history-heading">
+          <div class="ticket-perforation" aria-hidden="true"></div>
+
           <div class="history-header">
             <div class="history-title-group">
-              <h2 class="panel-title" id="history-heading">Historial de gastos</h2>
-              <span class="history-order-hint">Más reciente al más antiguo</span>
+              <div class="ticket-title-wrap">
+                <span class="ticket-index">02</span>
+                <h2 class="panel-title" id="history-heading">Bitácora de gastos</h2>
+              </div>
+              <span class="history-order-hint">Desliza o mantén presionado para borrar</span>
             </div>
 
-            <div class="filter-bar" id="filter-bar" role="tablist" aria-label="Filtrar por categoría"></div>
+            <div class="clip-tabs-shell" id="filter-shell">
+              <div class="filter-bar" id="filter-bar" role="tablist" aria-label="Filtrar por categoría"></div>
+              <div class="filter-bar filter-bar-clipped" id="filter-bar-clipped" aria-hidden="true"></div>
+            </div>
           </div>
 
           <div class="empty-state" id="empty-state" hidden>
             <div class="empty-icon" id="empty-icon" aria-hidden="true"></div>
-            <p class="empty-title">Sin gastos registrados</p>
+            <p class="empty-title">Bitácora sin movimientos</p>
             <p class="empty-copy">
-              Agrega tu primer movimiento arriba. Tus datos quedan guardados en este dispositivo aunque estés en modo avión.
+              Registra un gasto en el panel superior. Funciona al 100% en modo avión con persistencia local.
             </p>
           </div>
 
           <ul class="expense-list" id="expense-list" aria-live="polite"></ul>
         </section>
       </main>
-
-      <footer class="app-footer">
-        <span class="footer-meta">Almacenamiento local IndexedDB + Service Worker Cache First</span>
-        <div class="dataset-switcher" role="group" aria-label="Modo de verificación de interfaz">
-          <button type="button" class="dataset-btn is-active" id="mode-live-btn" data-mode="live">
-            Datos reales
-          </button>
-          <button type="button" class="dataset-btn" id="mode-worst-btn" data-mode="worst">
-            Caso extremo UI
-          </button>
-        </div>
-      </footer>
     </div>
 
     <div class="toast-viewport" aria-live="polite" aria-atomic="true">
       <div class="toast" id="undo-toast" data-visible="false" role="status">
-        <span class="toast-message" id="toast-message">Gasto eliminado</span>
+        <div class="toast-left">
+          <span class="toast-dot" aria-hidden="true"></span>
+          <span class="toast-message" id="toast-message">Gasto eliminado</span>
+        </div>
         <button type="button" class="toast-action" id="toast-undo-btn">
           <span id="undo-icon" aria-hidden="true"></span>
           <span>Deshacer</span>
         </button>
       </div>
     </div>
+
+    <nav class="proto-picker" aria-label="Estilo visual y prueba de estrés">
+      <span class="proto-picker-highlight" id="picker-highlight" aria-hidden="true"></span>
+      <button type="button" class="proto-picker-item" data-variant-btn="tactile" data-active aria-current="true">
+        Táctil
+      </button>
+      <button type="button" class="proto-picker-item" data-variant-btn="editorial">
+        Editorial
+      </button>
+      <button type="button" class="proto-picker-item" data-variant-btn="spatial">
+        Espacial
+      </button>
+      <span class="proto-picker-divider" aria-hidden="true"></span>
+      <button type="button" class="proto-picker-item" id="mode-live-btn" data-mode="live" hidden>
+        Real
+      </button>
+      <button
+        type="button"
+        class="proto-picker-item proto-picker-stress"
+        id="mode-worst-btn"
+        data-mode="worst"
+        title="Probar datos extremos (break-ui)"
+      >
+        Estrés UI
+      </button>
+    </nav>
 
     <script type="module" src="./app.js"></script>
   </body>
